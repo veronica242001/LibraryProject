@@ -1,31 +1,20 @@
 # LibraryProject
 
 Classes
-1. Person (abstract)
+1.Person (abstract)
   Class to model persons(used for readers, librarians, authors).
-
 2.Author - extends Person
-
 3.Librarian - extends Person
-
 4.Reader - extends Person
-
 5.Book( abstract)
-Class to model books(used for BookForRent and LibraryBook).
-
-6. BookForRent - extends Book
-
+  Class to model books(used for BookForRent and LibraryBook).
+6.BookForRent - extends Book
 7.LibraryBook - extends Book
-
-8. Publisher
-
-9. Library
-
-10. City
-
-12. LoanForm
-
-11. Section ( Enum : "HISTORY", "FICTION", "CRIME", "SCIENCE", "PHILOSOPHY", "PSYCHOLOGY")
+8. ublisher
+9.Library
+10.City
+11.LoanForm
+12.Section ( Enum : "HISTORY", "FICTION", "CRIME", "SCIENCE", "PHILOSOPHY", "PSYCHOLOGY")
 
 Interactions:
 
