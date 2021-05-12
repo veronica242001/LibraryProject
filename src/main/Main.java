@@ -1,17 +1,71 @@
 package main;
 
 import classes.*;
+import service.AuditWriteCsv;
 import service.LibraryService;
+import service.ReadCsv;
 
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import static java.lang.System.currentTimeMillis;
 
 
 public class Main {
 
     public static LibraryService libraryService;
 
-    public static LibraryService Info() {
+    public static LibraryService InfoFromCsv() throws IOException {
+        City city1 = new City("Targu-Jiu", "Romania");
+
+        Library library = new Library("Christian Tell", city1);
+        ReadCsv read = ReadCsv.getInstance();
+
+        ArrayList<Reader> readers;
+        readers = read.readFromCsv("reader", "src/reader_data.csv", library);
+        for (Reader r : readers) {
+            library.addReader(r);
+        }
+        ArrayList<Librarian> librarians;
+        librarians = read.readFromCsv("librarian", "src/librarian_data.csv", library);
+        for (Librarian l : librarians) {
+            library.addLibrarian(l);
+        }
+
+        ArrayList<BookForRent> booksForRent;
+        booksForRent = read.readFromCsv("bookforrent", "src/bookForRent_data.csv", library);
+        for (BookForRent bk : booksForRent) {
+            library.addBookForRent(bk);
+        }
+
+
+        ArrayList<LibraryBook> libraryBooks;
+        libraryBooks = read.readFromCsv("librarybook", "src/libraryBook_data.csv", library);
+        for (LibraryBook b : libraryBooks) {
+            library.addLibraryBook(b);
+        }
+
+
+        LibraryService libraryService = new LibraryService(library);
+
+        ArrayList<LoanForm> forms;
+        forms = read.readFromCsv("form", "src/forms_data.csv", library);
+        for (LoanForm f : forms) {
+            libraryService.addForm(f);
+        }
+        ArrayList<Publisher> publishers;
+        publishers = read.readFromCsv("publisher", "src/publisher_data.csv", library);
+        for (Publisher p : publishers) {
+            libraryService.addPublisher(p);
+        }
+        return libraryService;
+
+    }
+
+    public static LibraryService Info() throws IOException {
         City city1 = new City("Targu-Jiu", "Romania");
         City city2 = new City("Bucharest", "Romania");
         Publisher publisher1 = new Publisher("Humanitas", city2);
@@ -30,7 +84,7 @@ public class Main {
         BookForRent book3 = new BookForRent("The Alternative Hypothesis", author1, Section.FICTION, publisher1, "available");
         BookForRent book4 = new BookForRent("The Silent Patient", author2, Section.PSYCHOLOGY, publisher2, "available");
         BookForRent book5 = new BookForRent("Murder on the Orient Express", author3, Section.CRIME, publisher2, "unavailable");
-        BookForRent book9 = new BookForRent("Death on the Nile", author3, Section.CRIME,publisher2,"available");
+        BookForRent book9 = new BookForRent("Death on the Nile", author3, Section.CRIME, publisher2, "available");
 
         LibraryBook book6 = new LibraryBook("Brief History Of Time", author4, Section.SCIENCE, publisher3);
         LibraryBook book7 = new LibraryBook("Black Holes and Baby Universes and Other Essays", author4, Section.SCIENCE, publisher3);
@@ -46,7 +100,6 @@ public class Main {
         library.addLibraryBook(book6);
         library.addLibraryBook(book7);
         library.addLibraryBook(book8);
-
 
 
         Librarian librarian1 = new Librarian("Alexandru", "Pop", "0738989790", 3000);
@@ -68,23 +121,24 @@ public class Main {
         library.addReader(reader4);
         library.addReader(reader5);
 
-         LibraryService libraryService = new LibraryService(library);
-         LoanForm lf1 = new LoanForm(book1,reader1,librarian1, LocalDate.parse("2021-01-24"));
-         LoanForm lf2 = new LoanForm(book2,reader1,librarian2, LocalDate.parse("2021-01-24"));
-         lf2.setDueDate(LocalDate.parse("2021-02-24"));
-         LoanForm lf3  = new LoanForm(book5,reader2,librarian3,LocalDate.parse("2021-03-24"));
-         libraryService.addForm(lf1);
-         libraryService.addForm(lf2);
-         libraryService.addForm(lf3);
+        LibraryService libraryService = new LibraryService(library);
+        LoanForm lf1 = new LoanForm(book1, reader1, librarian1, LocalDate.parse("2021-01-24"));
+        LoanForm lf2 = new LoanForm(book2, reader1, librarian2, LocalDate.parse("2021-01-24"));
+        lf2.setDueDate(LocalDate.parse("2021-02-24"));
+        LoanForm lf3 = new LoanForm(book5, reader2, librarian3, LocalDate.parse("2021-03-24"));
+        libraryService.addForm(lf1);
+        libraryService.addForm(lf2);
+        libraryService.addForm(lf3);
 
 
-         return libraryService;
+        return libraryService;
     }
 
 
-    private static void menuLoop() {
+    private static void menuLoop() throws IOException {
         Scanner scanner = new Scanner(System.in);
         int input;
+        AuditWriteCsv write = AuditWriteCsv.getInstance();
         while (true) {
             System.out.println("--Main Menu--");
             System.out.println("Options:");
@@ -102,53 +156,64 @@ public class Main {
             System.out.println("12-Calculate the average salary");
             System.out.println("13-Librarians descending by salary");
             System.out.println("14- See all forms");
+            System.out.println("15-Add new BookForRent");
+            System.out.println("16-Add new Librarian");
             System.out.println("0-Exit");
 
             input = scanner.nextInt();
-            if ( input == 0) {
+            Timestamp timestamp = new Timestamp(currentTimeMillis());
+            if (input == 0) {
                 break;
-            }
-            else if ( input == 1) {
+            } else if (input == 1) {
                 libraryService.addNewReader();
-            }
-            else if ( input == 2) {
+                write.writeAudit("Add new reader", timestamp.toString());
+            } else if (input == 2) {
                 libraryService.addNewPublisher();
-            }
-            else if ( input == 3) {
+                write.writeAudit("Add new publisher", timestamp.toString());
+
+            } else if (input == 3) {
                 libraryService.addLibraryBook();
-            }
-            else if ( input == 4) {
+                write.writeAudit("Add LibraryBook", timestamp.toString());
+            } else if (input == 4) {
                 libraryService.allPublishers();
-            }
-            else if ( input == 5) {
+                write.writeAudit("See all publishers", timestamp.toString());
+            } else if (input == 5) {
                 libraryService.allBooks();
-            }
-            else if ( input == 6){
+                write.writeAudit("See all books", timestamp.toString());
+            } else if (input == 6) {
                 libraryService.allReaders();
-            }
-            else if ( input == 7) {
+                write.writeAudit("See all readers", timestamp.toString());
+            } else if (input == 7) {
                 libraryService.getBooksForRentBySection();
-            }
-            else if ( input == 8) {
+                write.writeAudit("See BooksForRent by section", timestamp.toString());
+            } else if (input == 8) {
                 libraryService.sectionsByPublisher();
-            }
-            else if( input == 9){
+                write.writeAudit("See sections by a publisher", timestamp.toString());
+
+            } else if (input == 9) {
                 libraryService.borrowBook();
-            }
-            else if ( input == 10) {
+                write.writeAudit("Borrow a book", timestamp.toString());
+            } else if (input == 10) {
                 libraryService.removeBooksByAuthor();
-            }
-            else if ( input == 11) {
+                write.writeAudit("Remove books by author", timestamp.toString());
+            } else if (input == 11) {
                 libraryService.increaseTheSalary();
-            }
-            else if ( input == 12) {
+                write.writeAudit("Increases the salary of librarians", timestamp.toString());
+            } else if (input == 12) {
                 libraryService.averageSalary();
-            }
-            else if ( input == 13) {
-                 libraryService.librariansDescendingBySalary();
-            }
-            else if( input == 14){
+                write.writeAudit("Calculate the average salary", timestamp.toString());
+            } else if (input == 13) {
+                libraryService.librariansDescendingBySalary();
+                write.writeAudit("Librarians descending by salary", timestamp.toString());
+            } else if (input == 14) {
                 libraryService.allForms();
+                write.writeAudit("See all forms", timestamp.toString());
+            } else if (input == 15) {
+                libraryService.addBookForRent();
+                write.writeAudit("Add new BookForRent", timestamp.toString());
+            } else if (input == 16) {
+                libraryService.addNewLibrarian();
+                write.writeAudit("Add new Librarian", timestamp.toString());
             }
 
         }
@@ -156,9 +221,10 @@ public class Main {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        libraryService = Info();
+        // libraryService = Info();
+        libraryService = InfoFromCsv();
         menuLoop();
     }
 

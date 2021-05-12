@@ -2,6 +2,7 @@ package service;
 
 import classes.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -10,6 +11,7 @@ public class LibraryService {
     private Set<Publisher> publishers;
 
     private Library library;
+    private WriteCsv write = WriteCsv.getInstance();
 
 
     public LibraryService(Library library) {
@@ -27,9 +29,8 @@ public class LibraryService {
 
     }
 
-
     //---------------
-    public void addNewReader() {
+    public void addNewReader() throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("First Name:");
@@ -42,11 +43,40 @@ public class LibraryService {
         String phoneNumber = scanner.nextLine();
         Reader reader = new Reader(FirstName, LastName, phoneNumber);
         library.addReader(reader);
+
+        write.WriteToCsv("src/reader_data.csv", library.getReaders());
+
+
+    }
+
+    //---------------
+    public void addNewLibrarian() throws IOException {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("First Name:");
+        String FirstName = scanner.nextLine();
+
+        System.out.println("Last Name:");
+        String LastName = scanner.nextLine();
+
+        System.out.println("Phone Number:");
+        String phoneNumber = scanner.nextLine();
+
+        System.out.println("Salary:");
+        String s = scanner.nextLine();
+        float salary = Float.parseFloat(s);
+
+        Librarian lb = new Librarian(FirstName, LastName, phoneNumber, salary);
+        library.addLibrarian(lb);
+
+        write.WriteToCsv("src/librarian_data.csv", library.getLibrarians());
+
+
     }
 
 
     //----------------
-    public void addNewPublisher() {
+    public void addNewPublisher() throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Name:");
@@ -61,7 +91,8 @@ public class LibraryService {
         City city = new City(cityName, country);
         Publisher publisher = new Publisher(name, city);
 
-        publishers.add(publisher);
+
+        addPublisher(publisher);
     }
 
 
@@ -109,7 +140,7 @@ public class LibraryService {
 
 
     //------------
-    public void addLibraryBook() {
+    public void addLibraryBook() throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Title:");
@@ -137,6 +168,49 @@ public class LibraryService {
 
                 LibraryBook lbk = new LibraryBook(title, author, section, publisher);
                 library.addLibraryBook(lbk);
+
+                write.WriteToCsv("src/libraryBook_data.csv", library.getLibraryBooks());
+            } else {
+                System.out.println("This section doesn't exist in the database");
+            }
+
+        }
+
+    }
+
+    //------------
+    public void addBookForRent() throws IOException {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Title:");
+        String title = scanner.nextLine();
+
+        System.out.println("===About author===");
+        Author author = addAuthor();
+
+        System.out.println("===Publishers available in the database===");
+        allPublishers();
+        System.out.println("Publisher(name):");
+
+        String publisherName = scanner.nextLine();
+        Publisher publisher = getPublisherByName(publisherName);
+
+        if (publisher == null) {
+            System.out.println("It doesn't exist in the database");
+
+        } else {
+            System.out.println("===Sections can be: History,Fiction, Crime, Science,Philosophy, Psychology=== ");
+            List<String> sections = new ArrayList<>(Arrays.asList("HISTORY", "FICTION", "CRIME", "SCIENCE", "PHILOSOPHY", "PSYCHOLOGY"));
+            String sectionName = scanner.nextLine();
+            if (sections.contains(sectionName.toUpperCase())) {
+                Section section = Section.valueOf(sectionName.toUpperCase());
+
+                System.out.println("====Status(available/unavailable)========");
+                String status = scanner.nextLine();
+                BookForRent bk = new BookForRent(title, author, section, publisher, status);
+                library.addBookForRent(bk);
+
+                write.WriteToCsv("src/bookForRent_data.csv", library.getBooksForRent());
             } else {
                 System.out.println("This section doesn't exist in the database");
             }
@@ -176,7 +250,7 @@ public class LibraryService {
                     found = true;
                 }
             }
-            if (!found ) {
+            if (!found) {
                 System.out.println("There are no BooksForRent in this section");
             }
         } else {
@@ -186,10 +260,10 @@ public class LibraryService {
     }
 
     //------------
-    public void borrowBook( ) {
+    public void borrowBook() throws IOException {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println(" TtileBook:");
+        System.out.println(" TitleBook:");
         String titleBook = scanner.nextLine();
 
         BookForRent bk = library.getBookForRentByTitle(titleBook);
@@ -223,7 +297,8 @@ public class LibraryService {
                         LocalDate loanDate = LocalDate.parse(date);
                         LoanForm loanForm = new LoanForm(bk, reader, librarian, loanDate);
 
-                        forms.add(loanForm);
+
+                        addForm(loanForm);
                         System.out.println("It was added successfully.");
 
                     } else {
@@ -247,7 +322,7 @@ public class LibraryService {
 
 
     //---------------
-    public void removeBooksByAuthor() {
+    public void removeBooksByAuthor() throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("First Name:");
@@ -261,11 +336,13 @@ public class LibraryService {
         } else {
             System.out.println("This author doesn't exist in the database");
         }
+        write.WriteToCsv("src/bookForRent_data.csv", library.getBooksForRent());
+        write.WriteToCsv("src/libraryBook_data.csv", library.getLibraryBooks());
 
     }
 
     //------------
-    public void increaseTheSalary() {
+    public void increaseTheSalary() throws IOException {
         float p;
         Scanner scanner = new Scanner(System.in);
         System.out.println("The percentage - [0,1]");
@@ -273,7 +350,8 @@ public class LibraryService {
         library.increaseTheSalary(p);
 
         System.out.println("The changes have been made successfully");
-
+        System.out.println(library.getLibrarians());
+        write.WriteToCsv("src/librarian_data.csv", library.getLibrarians());
 
     }
 
@@ -341,16 +419,28 @@ public class LibraryService {
         }
     }
 
-   //---------------
-    public void allForms(){
-        for( LoanForm f : forms){
+    //---------------
+    public void allForms() {
+        for (LoanForm f : forms) {
             System.out.println(f);
         }
     }
 
     //--------------
-    public void addForm(LoanForm lf){
+    public void addForm(LoanForm lf) throws IOException {
 
         forms.add(lf);
+
+        write.WriteToCsv("src/forms_data.csv", forms);
+    }
+
+    //---------
+    public void addPublisher(Publisher p) throws IOException {
+        publishers.add(p);
+        ArrayList<Publisher> pb = new ArrayList<>();
+        for (Publisher pp : publishers) {
+            pb.add(pp);
+        }
+        write.WriteToCsv("src/publisher_data.csv", pb);
     }
 }

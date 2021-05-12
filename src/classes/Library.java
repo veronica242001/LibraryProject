@@ -1,9 +1,6 @@
 package classes;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.*;
 
 public class Library {
     private String name;
@@ -101,7 +98,7 @@ public class Library {
     //---------------------------
     public BookForRent getBookForRentByTitle(String title) {
         for (BookForRent b : booksForRent) {
-            if (b.getTitle().equals(title)) {
+            if (b.getTitle().toLowerCase().equals(title.toLowerCase())) {
                 return b;
             }
         }
@@ -112,7 +109,7 @@ public class Library {
     //---------------------
     public Librarian getLibrarianByName(String firstNameLibrarian, String lastNameLibrarian) {
         for (Librarian l : librarians) {
-            if (l.getFirstName().equals(firstNameLibrarian) && l.getLastName().equals(lastNameLibrarian)) {
+            if (l.getFirstName().toLowerCase().equals(firstNameLibrarian.toLowerCase()) && l.getLastName().toLowerCase().equals(lastNameLibrarian.toLowerCase())) {
                 return l;
             }
         }
@@ -123,7 +120,7 @@ public class Library {
     //-----------------------------
     public Reader getReaderByName(String firstNameReader, String lastNameReader) {
         for (Reader r : readers) {
-            if (r.getFirstName().equals(firstNameReader) && r.getLastName().equals(lastNameReader)) {
+            if (r.getFirstName().toLowerCase().equals(firstNameReader.toLowerCase()) && r.getLastName().toLowerCase().equals(lastNameReader.toLowerCase())) {
                 return r;
             }
         }
@@ -137,7 +134,7 @@ public class Library {
        int i = 0;
        while( i < booksForRent.size()){
            BookForRent b = booksForRent.get(i);
-            if (b.getAuthor().getFirstName().equals(firstName) && b.getAuthor().getLastName().equals(lastName)) {
+            if (b.getAuthor().getFirstName().toLowerCase().equals(firstName.toLowerCase()) && b.getAuthor().getLastName().toLowerCase().equals(lastName.toLowerCase())) {
                 booksForRent.remove(b);
 
                 rmv = true;
@@ -150,7 +147,7 @@ public class Library {
        i= 0;
         while( i < libraryBooks.size()){
             LibraryBook b = libraryBooks.get(i);
-            if (b.getAuthor().getFirstName().equals(firstName) && b.getAuthor().getLastName().equals(lastName)) {
+            if (b.getAuthor().getFirstName().toLowerCase().equals(firstName.toLowerCase()) && b.getAuthor().getLastName().toLowerCase().equals(lastName.toLowerCase())) {
                 libraryBooks.remove(b);
                 rmv = true;
             }
