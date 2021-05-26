@@ -52,7 +52,7 @@ public abstract class Person {
 
     @Override
     public String toString() {
-        return "firstName='" + firstName + '\'' +
+        return "id "+ id+ " firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'';
     }
 
