@@ -59,6 +59,7 @@ public class MainDB {
                 System.out.println("2-Remove Librarian");
                 System.out.println("3-See all Librarians");
                 System.out.println("4-Update Salary");
+                System.out.println("5-Display By Id");
                 System.out.println("0-Back");
 
                 input = scanner.nextInt();
@@ -85,6 +86,12 @@ public class MainDB {
                     float salary = scanner.nextFloat();
                     librarianRepository.updateLibrarianSalary(salary,id);
                 }
+                else if(input == 5){
+                    System.out.println("Enter the librarianId:");
+                    int id = scanner.nextInt();
+                    Librarian librarian = librarianRepository.getLibrarianById(id);
+                    System.out.println(librarian);
+                }
                 else if(input == 0)
                     menuLocation = 0;
             }
@@ -95,6 +102,7 @@ public class MainDB {
                 System.out.println("2-Remove Reader");
                 System.out.println("3-See all readers");
                 System.out.println("4-Update firstName");
+                System.out.println("5-Display By Id");
                 System.out.println("0-Back");
 
                 input = scanner.nextInt();
@@ -123,6 +131,12 @@ public class MainDB {
                     String firstName = scanner.next();
                     readerRepository.updateReaderFisrtName(firstName, id);
                 }
+                else if(input == 5){
+                    System.out.println("Enter the readerId:");
+                    int id = scanner.nextInt();
+                    Reader reader = readerRepository.getReaderById(id);
+                    System.out.println(reader);
+                }
                 else if(input == 0)
                     menuLocation = 0;
             }
@@ -133,6 +147,7 @@ public class MainDB {
                 System.out.println("2-Remove City");
                 System.out.println("3-See all cities");
                 System.out.println("4-Update the name of the city");
+                System.out.println("5-Display By Id");
                 System.out.println("0-Back");
 
                 input = scanner.nextInt();
@@ -168,6 +183,13 @@ public class MainDB {
                     cityRepository.updateCityName(name, id);
 
                 }
+                else if ( input == 5){
+                    int id;
+                    System.out.println("Enter CityID:");
+                    id = scanner.nextInt();
+                    City city = cityRepository.getCityById(id);
+                    System.out.println(city);
+                }
                 else if(input == 0)
                     menuLocation = 0;
             }
@@ -178,6 +200,7 @@ public class MainDB {
                 System.out.println("2-Remove Publisher");
                 System.out.println("3-See all publishers");
                 System.out.println("4-Update name");
+                System.out.println("5-Display By Id");
                 System.out.println("0-Back");
 
                 input = scanner.nextInt();
@@ -214,6 +237,13 @@ public class MainDB {
                     System.out.println("Enter the new name");
                     name= scanner.next();
                     publisherRepository.updatePublisherName(name,id);
+                }
+                else if( input == 5){
+                    int id;
+                    System.out.println("Enter PublisherId:");
+                    id = scanner.nextInt();
+                    Publisher publisher = publisherRepository.getPublisherById(id);
+                    System.out.println(publisher);
                 }
 
                 else if(input == 0)
