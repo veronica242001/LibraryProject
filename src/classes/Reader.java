@@ -8,6 +8,11 @@ public class Reader extends Person{
         super( firstName, lastName);
         this.phoneNumber = phoneNumber;
     }
+    public Reader( int id, String firstName, String lastName, String phoneNumber) {
+        super(id, firstName, lastName);
+        this.phoneNumber = phoneNumber;
+    }
+
 
     public String getPhoneNumber() {
         return phoneNumber;

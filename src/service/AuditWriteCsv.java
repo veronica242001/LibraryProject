@@ -18,7 +18,7 @@ public class AuditWriteCsv {
     }
 
     public void writeAudit( String action,String timestamp ) throws IOException {
-        File f = new File("src/audit_data.csv");
+        File f = new File("src/resources/auditCsv/audit_data.csv");
         BufferedWriter output = new BufferedWriter(new FileWriter(f,true));
         output.append(action);
         output.append(",");

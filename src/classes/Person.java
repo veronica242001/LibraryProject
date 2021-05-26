@@ -3,12 +3,23 @@ package classes;
 import java.util.Objects;
 
 public abstract class Person {
+    private int id;
     private String firstName;
     private String lastName;
 
+    private static int number = 0;
+
+
 
     public Person(String firstName, String lastName) {
+        number += 1;
+        this.id = number;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
+    public Person(int Id, String firstName, String lastName) {
+        this.id = Id;
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -29,6 +40,14 @@ public abstract class Person {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

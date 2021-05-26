@@ -5,11 +5,19 @@ import java.util.Objects;
 public class Publisher {
     private String name;
     private City city;
+    private int id;
+    private int idCity;
 
     public Publisher(String name, City city) {
         this.name = name;
         this.city = city;
     }
+    public Publisher(int id, String name, City city) {
+        this.id = id;
+        this.name = name;
+        this.city = city;
+    }
+
 
     public String getName() {
         return name;

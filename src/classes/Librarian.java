@@ -9,6 +9,12 @@ public class Librarian  extends Person implements  Comparable<Librarian> {
         this.phoneNumber = phoneNumber;
         this.salary = salary;
     }
+    public Librarian( int id, String firstName, String lastName, String phoneNumber, float salary) {
+        super(id, firstName, lastName);
+        this.phoneNumber = phoneNumber;
+        this.salary = salary;
+    }
+
 
     public String getPhoneNumber() {
         return phoneNumber;
