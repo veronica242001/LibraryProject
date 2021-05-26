@@ -1,6 +1,6 @@
 package repository;
 
-import classes.Librarian;
+import models.Librarian;
 import config.DatabaseConfiguration;
 
 import java.sql.*;

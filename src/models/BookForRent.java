@@ -1,4 +1,4 @@
-package classes;
+package models;
 
 public class BookForRent extends Book{
         public String status; // available/unavailable

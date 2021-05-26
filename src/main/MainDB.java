@@ -1,16 +1,15 @@
 package main;
 
-import classes.City;
-import classes.Librarian;
-import classes.Publisher;
-import classes.Reader;
+import models.City;
+import models.Librarian;
+import models.Publisher;
+import models.Reader;
 import config.DatabaseSetup;
 import repository.CityRepository;
 import repository.LibrarianRepository;
 import repository.PublisherRepository;
 import repository.ReaderRepository;
 import service.LibrarianService;
-import service.LibraryService;
 import service.PublisherService;
 import service.ReaderService;
 

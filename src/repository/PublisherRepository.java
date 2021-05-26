@@ -1,7 +1,7 @@
 package repository;
 
-import classes.City;
-import classes.Publisher;
+import models.City;
+import models.Publisher;
 import config.DatabaseConfiguration;
 
 import java.sql.*;

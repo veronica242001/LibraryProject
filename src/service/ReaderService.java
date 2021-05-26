@@ -1,7 +1,6 @@
 package service;
 
-import classes.Library;
-import classes.Reader;
+import models.Reader;
 
 import java.io.IOException;
 import java.util.ArrayList;

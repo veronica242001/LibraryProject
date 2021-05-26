@@ -1,7 +1,6 @@
-package classes;
+package models;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class LoanForm {
 

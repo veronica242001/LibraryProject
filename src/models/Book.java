@@ -1,4 +1,4 @@
-package classes;
+package models;
 
 public abstract class Book {
 

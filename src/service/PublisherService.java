@@ -1,6 +1,6 @@
 package service;
 
-import classes.*;
+import models.*;
 
 import java.io.IOException;
 import java.util.*;

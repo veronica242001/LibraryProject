@@ -1,9 +1,6 @@
 package main;
 
-import classes.*;
-import config.DatabaseConfiguration;
-import config.DatabaseSetup;
-import repository.LibrarianRepository;
+import models.*;
 import service.*;
 
 import java.io.IOException;
@@ -12,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static config.DatabaseConfiguration.getDatabaseConnection;
 import static java.lang.System.currentTimeMillis;
 
 

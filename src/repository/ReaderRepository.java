@@ -1,6 +1,6 @@
 package repository;
 
-import classes.Reader;
+import models.Reader;
 import config.DatabaseConfiguration;
 
 import java.sql.*;

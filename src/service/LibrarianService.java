@@ -1,11 +1,8 @@
 package service;
 
-import classes.Librarian;
-import classes.Library;
-import repository.LibrarianRepository;
+import models.Librarian;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;

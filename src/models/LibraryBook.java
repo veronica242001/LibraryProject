@@ -1,4 +1,4 @@
-package classes;
+package models;
 
 public class LibraryBook extends Book{   // aceste carti nu pot imprumutate, pot fi citite doar in incinta bibliotecii
 

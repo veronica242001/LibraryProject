@@ -1,6 +1,6 @@
 package repository;
 
-import classes.City;
+import models.City;
 import config.DatabaseConfiguration;
 
 import java.sql.*;
